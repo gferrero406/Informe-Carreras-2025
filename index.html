@@ -84,6 +84,15 @@
   .sources{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media (max-width:780px){ .sources{grid-template-columns:1fr} }
   .sources a{display:block;border:1px solid var(--line);border-radius:10px;padding:10px;background:rgba(255,255,255,.04)}
+
+  /* Stats */
+  .stats{padding:28px 20px;border-top:1px solid var(--line)}
+  .statgrid{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:12px}
+  @media (max-width:980px){ .statgrid{grid-template-columns:repeat(2,minmax(160px,1fr))} }
+  @media (max-width:560px){ .statgrid{grid-template-columns:1fr} }
+  .stat{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);padding:14px}
+  .stat .num{font-size:22px;font-weight:700}
+  .stat small{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -114,33 +123,29 @@
     </div>
   </section>
 
-  <!-- AUDIO -->
-  <section class="wrap" id="audio" aria-labelledby="t-audio">
-    <h2 id="t-audio">Audio · Factores de elección</h2>
-    <p class="muted">Subí tu archivo a <code>audio/factores.mp3</code> (o .wav) y cambiá el <code>src</code> abajo.</p>
-    <audio id="player" controls preload="none" style="width:100%">
-      <!-- PONÉ ACA TU ARCHIVO -->
-      <source src="" type="audio/mpeg">
-      Tu navegador no soporta audio HTML5.
-    </audio>
+  <!-- VIDEO FINAL -->
+  <section class="wrap" id="video" aria-labelledby="t-video">
+    <h2 id="t-video">Video final · Factores de elección</h2>
+    <video controls preload="metadata" style="width:100%;border:1px solid var(--line);border-radius:12px;background:#000" src="Eleccion%20Carrera.mp4">
+      Tu navegador no soporta video HTML5.
+    </video>
   </section>
 
   <!-- ENTREVISTAS (2 videos) -->
   <section class="wrap" id="entrevistas" aria-labelledby="t-yt">
     <h2 id="t-yt">Entrevistas (2 videos)</h2>
-    <p class="muted">Pegá los enlaces de YouTube en los <code>src</code> (formato: <code>https://www.youtube.com/embed/ID</code>).</p>
     <div class="grid2">
       <div class="card">
-        <strong>Entrevista 1</strong>
+        <strong>Entrevista Biomédica</strong>
         <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;margin-top:8px">
-          <iframe src="" title="Entrevista 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          <iframe src="https://www.youtube.com/embed/O0HWn042X4Q" title="Entrevista Biomédica" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
         </div>
       </div>
       <div class="card">
-        <strong>Entrevista 2</strong>
+        <strong>Entrevista Computación</strong>
         <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;margin-top:8px">
-          <iframe src="" title="Entrevista 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          <iframe src="https://www.youtube.com/embed/47BKjU2l2bE" title="Entrevista Computación" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
         </div>
       </div>
@@ -155,9 +160,6 @@
         <a href="#bio-p1"><span class="dot"></span><span>1) Motivación</span></a>
         <a href="#bio-p2"><span class="dot"></span><span>2) Dónde + Plan (resumen)</span></a>
         <a href="#bio-p3"><span class="dot"></span><span>3) Plan de estudio</span></a>
-        <a href="#bio-p4"><span class="dot"></span><span>4) Correlativas / Diagrama</span></a>
-        <a href="#bio-p5"><span class="dot"></span><span>5) Horarios (ejemplo)</span></a>
-        <a href="#bio-p6"><span class="dot"></span><span>6) Reflexiones</span></a>
       </nav>
       <div class="mini" aria-hidden="true">
         <a href="#biomedica" class="active">Inicio Biomédica</a>
@@ -197,61 +199,14 @@
           <li><strong>UNC – FCEFyN:</strong> pública, ~5 años. Requiere <a href="https://fcefyn.unc.edu.ar/ingresantes/" target="_blank" rel="noopener">CINEU (nivelación)</a> y <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/extension/prosecretaria-de-vinculacion-social/compromiso-social-estudiantil-en-la-fcefyn/" target="_blank" rel="noopener">≥ 30 h CSE</a>.</li>
           <li><strong>Plan 2025:</strong> esterilización, diseño bajo norma, calidad, mantenimiento hospitalario, proyecto integrador y práctica profesional.</li>
         </ul>
-        
       </article>
 
       <article class="step" id="bio-p3">
         <h3>3) Plan de estudio (mapa por año/semestre)</h3>
         <div class="plan">
           <div class="plangrid" id="plan-bio-grid"></div>
-          <div class="footnote">Falta: pegar el <strong>listado oficial</strong> por semestre desde el <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener">Plan 2025</a>.</div>
+          <div class="footnote">Reemplazar por el <strong>listado oficial</strong> por semestre desde el <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener">Plan 2025</a>.</div>
         </div>
-      </article>
-
-      <article class="step" id="bio-p4">
-        <h3>4) Correlativas / Diagrama (resumen)</h3>
-        <ul>
-          <li>Matemática → Señales → Procesamiento</li>
-          <li>Electrónica I → II → Instrumentación</li>
-          <li>Anatomía/Fisiología → Biomecánica</li>
-        </ul>
-        <p class="footnote">Normativa nacional: contenidos mínimos y estándares (Res. ME <a href="https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-1555-2021-355585" target="_blank" rel="noopener">1555/2021</a>).</p>
-      </article>
-
-      <article class="step" id="bio-p5">
-        <h3>5) Horarios y organización semanal (ejemplo editable)</h3>
-        <div class="grid2">
-          <div>
-            <ul class="muted">
-              <li>Bloques de 2–3 h por cátedra</li>
-              <li>Laboratorio semanal</li>
-            </ul>
-          </div>
-          <div class="card">
-            <strong>Tabla ejemplo</strong>
-            <div class="sem">
-              <table style="width:100%;font-size:13px;color:var(--muted)">
-                <thead><tr><th style="text-align:left">Franja</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th></tr></thead>
-                <tbody>
-                  <tr><td>8–10</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>10–12</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>14–16</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>16–18</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="step" id="bio-p6">
-        <h3>6) Reflexiones personales</h3>
-        <ul>
-          <li>Perfil técnico–científico: programación, robótica, matemática, ciencias naturales.</li>
-          <li>Habilidades: disciplina, constancia, organización, compañerismo, comunicación, liderazgo.</li>
-          <li>A potenciar: matemática avanzada, electrónica y procesamiento de señales.</li>
-          <li>Motivación clave: biomecánica + deporte (rendimiento, prevención, prótesis/órtesis, análisis de movimiento).</li>
-        </ul>
       </article>
     </div>
   </section>
@@ -264,9 +219,6 @@
         <a href="#comp-p1"><span class="dot"></span><span>1) Motivación</span></a>
         <a href="#comp-p2"><span class="dot"></span><span>2) Dónde + Plan (resumen)</span></a>
         <a href="#comp-p3"><span class="dot"></span><span>3) Plan de estudio</span></a>
-        <a href="#comp-p4"><span class="dot"></span><span>4) Correlativas / Diagrama</span></a>
-        <a href="#comp-p5"><span class="dot"></span><span>5) Horarios (ejemplo)</span></a>
-        <a href="#comp-p6"><span class="dot"></span><span>6) Reflexiones</span></a>
       </nav>
       <div class="mini" aria-hidden="true">
         <a href="#biomedica">Ir a Biomédica</a>
@@ -307,64 +259,75 @@
           <li><strong>Afines en Córdoba:</strong>
             <a href="https://www.institucional.frc.utn.edu.ar/internacionales/frc/de_grado/sistemas.asp" target="_blank" rel="noopener">UTN FRC – Ing. en Sistemas de Información</a>,
             <a href="https://ucc.edu.ar/carreras/ingenieria-computacion/" target="_blank" rel="noopener">UCC – Ing. en Computación</a>,
-            <a href="https://www.ubp.edu.ar/carreras/informatica/" target="_blank" rel="noopener">UBP – Ing. Informática</a>.
+            <a href="https://www.ubp.edu.ar/academicas/ingenieria-informatica/" target="_blank" rel="noopener">UBP – Ing. Informática</a>.
           </li>
         </ul>
-        
       </article>
 
       <article class="step" id="comp-p3">
         <h3>3) Plan de estudio (mapa por año/semestre)</h3>
         <div class="plan">
           <div class="plangrid" id="plan-comp-grid"></div>
-          <div class="footnote">Falta: pegar el <strong>listado oficial</strong> por semestre desde el <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener">Plan 2025</a>.</div>
+          <div class="footnote">Reemplazar por el <strong>listado oficial</strong> por semestre desde el <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener">Plan 2025</a>.</div>
         </div>
-      </article>
-
-      <article class="step" id="comp-p4">
-        <h3>4) Correlativas / Diagrama (resumen)</h3>
-        <ul>
-          <li>Programación I → Estructuras → Programación II</li>
-          <li>Arquitectura I → II → Embebidos</li>
-          <li>Redes I → II · Seguridad I → II</li>
-        </ul>
-      </article>
-
-      <article class="step" id="comp-p5">
-        <h3>5) Horarios y organización semanal (ejemplo editable)</h3>
-        <div class="grid2">
-          <div>
-            <ul class="muted">
-              <li>Teóricos de 2–3 h + prácticos/lab</li>
-              <li>Proyectos integradores en tramos finales</li>
-            </ul>
-          </div>
-          <div class="card">
-            <strong>Tabla ejemplo</strong>
-            <div class="sem">
-              <table style="width:100%;font-size:13px;color:var(--muted)">
-                <thead><tr><th style="text-align:left">Franja</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th></tr></thead>
-                <tbody>
-                  <tr><td>8–10</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>10–12</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>14–16</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td>16–18</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="step" id="comp-p6">
-        <h3>6) Reflexiones personales</h3>
-        <ul>
-          <li>Versatilidad: software + IA/ML + embebidos; aplicación a salud/deporte.</li>
-          <li>Objetivo: proyectos con impacto real; perfil que combine IA + embebidos.</li>
-          <li>Habilidades: disciplina, constancia, organización, trabajo en equipo y comunicación.</li>
-        </ul>
       </article>
     </div>
+  </section>
+
+  <!-- 6) REFLEXIONES PERSONALES (ÚNICO BLOQUE) -->
+  <section class="wrap" id="reflexiones">
+    <h2>6) Reflexiones personales (síntesis)</h2>
+    <div class="grid2">
+      <div class="card">
+        <p><strong>Perfil e intereses:</strong> programación, robótica, matemática y ciencias naturales. Disfruto construir soluciones que funcionen: prototipos soft–hard, integración y pruebas.</p>
+        <p><strong>Habilidades:</strong> disciplina, constancia, organización, compañerismo, comunicación, liderazgo y curiosidad. A reforzar: matemática avanzada y procesamiento de señales.</p>
+      </div>
+      <div class="card">
+        <p><strong>Motivación Biomédica:</strong> biomecánica ligada al deporte de alto rendimiento; interés por rendimiento, prevención de lesiones, análisis de movimiento, prótesis/órtesis y rehabilitación.</p>
+        <p><strong>Motivación Computación:</strong> versatilidad para IA/ML, visión por computadora e IoT, con aplicaciones a salud y deporte (telemetría y análisis de señales/imágenes).</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <strong>Conclusión general:</strong>
+      <p class="muted" style="margin:6px 0 0">
+        Ambas ingenierías conectan con mi perfil técnico–científico y con el impacto que busco. Biomédica profundiza en cuerpo humano, señales e instrumentación para la salud; Computación ofrece herramientas amplias de software, IA y embebidos que puedo aplicar a salud y deporte. Mi decisión final se apoya en combinar estas fortalezas: aprender haciendo, proyectos con impacto real y formación sólida para crecer en equipos interdisciplinarios.
+      </p>
+    </div>
+  </section>
+
+  <!-- PLANES OFICIALES 2025 -->
+  <section class="wrap" id="planes">
+    <h2>Planes oficiales 2025</h2>
+    <div class="grid2">
+      <a class="sources" style="display:block" href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener">
+        <strong>Plan 2025 · Ingeniería Biomédica</strong><br><small>Escuela de Ingeniería Biomédica – FCEFyN, UNC.</small>
+      </a>
+      <a class="sources" style="display:block" href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener">
+        <strong>Plan 2025 · Ingeniería en Computación</strong><br><small>Escuela de Ingeniería en Computación – FCEFyN, UNC.</small>
+      </a>
+    </div>
+  </section>
+
+  <!-- ESTADÍSTICAS (listas para completar) -->
+  <section class="stats wrap" id="estadisticas">
+    <h2>Estadísticas clave (Argentina / Córdoba)</h2>
+    <div class="statgrid">
+      <div class="stat"><div class="num" id="st-ingresantes">—</div><small>Ingresantes anuales (SPU)</small></div>
+      <div class="stat"><div class="num" id="st-matricula">—</div><small>Matrícula total (SPU)</small></div>
+      <div class="stat"><div class="num" id="st-egresados">—</div><small>Egresados anuales (SPU)</small></div>
+      <div class="stat"><div class="num" id="st-tasa">—</div><small>Tasa de crecimiento matrícula (SPU)</small></div>
+
+      <div class="stat"><div class="num" id="st-it-empleo">—</div><small>Empleo sector IT (OPSSI–CESSI)</small></div>
+      <div class="stat"><div class="num" id="st-it-export">—</div><small>Exportaciones servicios basados en conocimiento (OPSSI–CESSI)</small></div>
+      <div class="stat"><div class="num" id="st-it-salarios">—</div><small>Salarios promedio IT (OPSSI–CESSI)</small></div>
+      <div class="stat"><div class="num" id="st-hosp">—</div><small>Parque tecnológico hospitalario (fuente provincial)</small></div>
+
+      <div class="stat"><div class="num" id="st-anmat">—</div><small>Dispositivos médicos registrados (ANMAT)</small></div>
+      <div class="stat"><div class="num" id="st-incubadoras">—</div><small>Incubadoras/centros I+D Córdoba</small></div>
+      <div class="stat"><div class="num" id="st-practicas">—</div><small>Convenios/prácticas vigentes (FCEFyN)</small></div>
+      <div class="stat"><div class="num" id="st-becas">—</div><small>Becas/ayudas disponibles</small></div>
+    </div>
+    <p class="footnote">Completá los valores con datos de <a href="https://www.argentina.gob.ar/educacion/universidades/informacion/publicaciones/anuarios" target="_blank" rel="noopener">SPU – Anuarios estadísticos</a>, <a href="https://cessi.org.ar/opssi/" target="_blank" rel="noopener">OPSSI–CESSI</a> y <a href="https://www.argentina.gob.ar/anmat" target="_blank" rel="noopener">ANMAT</a>.</p>
   </section>
 
   <!-- FUENTES -->
@@ -378,7 +341,7 @@
       <a href="https://fcefyn.unc.edu.ar/ingresantes/" target="_blank" rel="noopener"><strong>Ingreso · CINEU (FCEFyN)</strong><br><small>Información oficial de ingreso.</small></a>
       <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/extension/prosecretaria-de-vinculacion-social/compromiso-social-estudiantil-en-la-fcefyn/" target="_blank" rel="noopener"><strong>Compromiso Social Estudiantil (CSE)</strong><br><small>≥ 30 horas.</small></a>
       <a href="https://www.argentina.gob.ar/educacion/universidades/informacion/publicaciones/anuarios" target="_blank" rel="noopener"><strong>SPU · Anuarios Estadísticos</strong><br><small>Matrícula/ingresantes/egresados.</small></a>
-      <a href="https://cessi.org.ar/opssi/" target="_blank" rel="noopener"><strong>OPSSI–CESSI</strong><br><small>Indicadores sector IT (descargas 2025).</small></a>
+      <a href="https://cessi.org.ar/opssi/" target="_blank" rel="noopener"><strong>OPSSI–CESSI</strong><br><small>Indicadores sector IT.</small></a>
       <a href="https://www.argentina.gob.ar/anmat" target="_blank" rel="noopener"><strong>ANMAT · Productos médicos</strong><br><small>Registros y normativa.</small></a>
       <a href="https://www.institucional.frc.utn.edu.ar/internacionales/frc/de_grado/sistemas.asp" target="_blank" rel="noopener"><strong>UTN FRC · Ing. en Sistemas de Información</strong></a>
       <a href="https://ucc.edu.ar/carreras/ingenieria-computacion/" target="_blank" rel="noopener"><strong>UCC · Ing. en Computación</strong></a>
