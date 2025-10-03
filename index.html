@@ -4,9 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Informe de Carreras 2025</title>
-<meta name="description" content="Informe interactivo sobre Ingeniería Biomédica e Ingeniería en Computación (FCEFyN–UNC). Modo oscuro.">
+<meta name="description" content="Informe interactivo sobre Ingeniería Biomédica e Ingeniería en Computación (FCEFyN–UNC).">
 <style>
-  /* ===== MODO OSCURO ===== */
   :root{
     --bg:#0b0c10;--text:#fff;--muted:rgba(255,255,255,.76);
     --line:rgba(255,255,255,.14);--glass:rgba(255,255,255,.06);
@@ -18,17 +17,16 @@
   .wrap{max-width:1120px;margin-inline:auto;padding:24px}
   :focus-visible{outline:3px solid #fff;outline-offset:2px}
 
-  /* Título */
-  .title{position:sticky;top:0;z-index:10;background:rgba(11,12,16,.88);backdrop-filter:blur(8px);
-         border-bottom:1px solid var(--line)}
+  .title{position:sticky;top:0;z-index:10;background:rgba(11,12,16,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  /* Animación de mostrar/ocultar la barra */
+    .title{ transition: transform .25s ease; }
+    .title.hide{ transform: translateY(-100%); }
+
   .title .inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 24px}
   .title h1{margin:0;font-size:clamp(18px,3.6vw,22px)}
-
-  /* Progreso */
   .progress{position:fixed;top:0;left:0;height:3px;z-index:20;background:linear-gradient(90deg,var(--pink),var(--salmon));width:0;transition:width .15s linear}
   .progress.comp{background:linear-gradient(90deg,var(--cyan),var(--blue))}
 
-  /* Hero */
   .hero{padding:32px 20px;border-bottom:1px solid var(--line)}
   .circles{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin:18px auto}
   .circle{position:relative;width:270px;height:270px;border-radius:50%;border:1px solid var(--line);
@@ -51,7 +49,6 @@
   }
   .circle h2{margin:0;font-size:18px}
 
-  /* Layout carreras */
   .career{display:grid;grid-template-columns:260px 1fr;gap:22px;padding:28px 20px;border-top:1px solid var(--line)}
   @media (max-width:980px){ .career{grid-template-columns:1fr} }
   .side{position:sticky;top:68px;align-self:start;display:flex;flex-direction:column;gap:10px}
@@ -71,34 +68,32 @@
   ul{padding-left:18px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media (max-width:780px){ .grid2{grid-template-columns:1fr} }
-
-  .pillset{display:flex;flex-wrap:wrap;gap:8px}
-  .pill{padding:6px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;background:rgba(255,255,255,.05)}
   .card{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);padding:10px}
 
-  .plan{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);padding:10px}
-  .plangrid{display:grid;grid-template-columns:repeat(5, minmax(180px,1fr));gap:10px;min-width:920px}
-  .sem{border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.3);padding:8px;margin-top:8px}
-  .footnote{font-size:12px;color:var(--muted);margin-top:6px}
+  /* Accordion plan */
+  details{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);padding:10px;margin-bottom:10px}
+  summary{cursor:pointer;font-weight:600}
+  .year{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .sem{border:1px solid var(--line);border-radius:10px;padding:8px;background:rgba(0,0,0,.3)}
+  .sem em{font-style:normal;color:var(--muted)}
+  .sem ul{margin:8px 0 0}
 
   .sources{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media (max-width:780px){ .sources{grid-template-columns:1fr} }
   .sources a{display:block;border:1px solid var(--line);border-radius:10px;padding:10px;background:rgba(255,255,255,.04)}
 
-  /* Stats */
   .stats{padding:28px 20px;border-top:1px solid var(--line)}
-  .statgrid{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:12px}
-  @media (max-width:980px){ .statgrid{grid-template-columns:repeat(2,minmax(160px,1fr))} }
-  @media (max-width:560px){ .statgrid{grid-template-columns:1fr} }
+  .statgrid{display:grid;grid-template-columns:repeat(2, minmax(300px,1fr));gap:12px}
+  @media (max-width:720px){ .statgrid{grid-template-columns:1fr} }
   .stat{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);padding:14px}
   .stat .num{font-size:22px;font-weight:700}
   .stat small{color:var(--muted)}
+  .btn{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.06)}
 </style>
 </head>
 <body>
 <div class="progress" id="progress"></div>
 
-<!-- Título mínimo, sin navbar extra -->
 <section class="title">
   <div class="inner wrap">
     <h1>Informe de Carreras 2025</h1>
@@ -108,32 +103,44 @@
 
 <main>
   <!-- HERO -->
-  <section class="hero wrap" id="inicio" aria-labelledby="t-inicio">
-    <h2 id="t-inicio" style="margin:0 0 8px">Elegí una carrera y empezá a recorrer</h2>
+  <section class="hero wrap" id="inicio">
+    <h2 style="margin:0 0 8px">Elegí una carrera y empezá a recorrer</h2>
     <p class="muted" style="margin:0 0 14px">Acercá el cursor para hacer <strong>zoom</strong>. Hacé clic para entrar. También podés scrollear o usar el índice lateral.</p>
     <div class="circles">
       <button class="circle biomed" data-target="#biomedica" aria-label="Ir a Ingeniería Biomédica">
-        <div class="ret"></div>
-        <h2>Ingeniería Biomédica</h2>
+        <div class="ret"></div><h2>Ingeniería Biomédica</h2>
       </button>
       <button class="circle comp" data-target="#computacion" aria-label="Ir a Ingeniería en Computación">
-        <div class="ret"></div>
-        <h2>Ingeniería en Computación</h2>
+        <div class="ret"></div><h2>Ingeniería en Computación</h2>
       </button>
     </div>
   </section>
 
   <!-- VIDEO FINAL -->
   <section class="wrap" id="video" aria-labelledby="t-video">
-    <h2 id="t-video">Video final · Factores de elección</h2>
-    <video controls preload="metadata" style="width:100%;border:1px solid var(--line);border-radius:12px;background:#000" src="Eleccion%20Carrera.mp4">
-      Tu navegador no soporta video HTML5.
-    </video>
-  </section>
+  <h2 id="t-video">Video final · Factores de elección</h2>
+
+  <!-- Embed de Google Drive -->
+  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#000">
+    <iframe
+      src="https://drive.google.com/file/d/1J4hWLD5D2I9xnnbxDfNXJ62mljzBTa9x/preview"
+      allow="autoplay; fullscreen"
+      allowfullscreen
+      style="position:absolute;top:0;left:0;width:100%;height:100%;border:0">
+    </iframe>
+  </div>
+
+  <!-- Enlace alternativo por si el embed no carga -->
+  <p class="muted" style="margin-top:8px">
+    Si no ves el video, abrilo acá:
+    <a class="btn" href="https://drive.google.com/file/d/FILE_ID/view?usp=sharing" target="_blank" rel="noopener">Ver en Google Drive</a>
+  </p>
+</section>
+
 
   <!-- ENTREVISTAS (2 videos) -->
-  <section class="wrap" id="entrevistas" aria-labelledby="t-yt">
-    <h2 id="t-yt">Entrevistas (2 videos)</h2>
+  <section class="wrap" id="entrevistas">
+    <h2>Entrevistas</h2>
     <div class="grid2">
       <div class="card">
         <strong>Entrevista Biomédica</strong>
@@ -153,13 +160,13 @@
   </section>
 
   <!-- CARRERA: BIOMÉDICA -->
-  <section class="career wrap" id="biomedica" aria-labelledby="t-bio">
+  <section class="career wrap" id="biomedica">
     <aside class="side" aria-label="Índice Biomédica">
       <div class="tag" style="border-color:var(--pink)">Ingeniería Biomédica</div>
       <nav class="index" id="idx-bio">
-        <a href="#bio-p1"><span class="dot"></span><span>1) Motivación</span></a>
-        <a href="#bio-p2"><span class="dot"></span><span>2) Dónde + Plan (resumen)</span></a>
-        <a href="#bio-p3"><span class="dot"></span><span>3) Plan de estudio</span></a>
+        <a href="#bio-mot"><span class="dot"></span><span>Motivación</span></a>
+        <a href="#bio-donde"><span class="dot"></span><span>Dónde se estudia + Plan</span></a>
+        <a href="#bio-plan"><span class="dot"></span><span>Plan de estudio (oficial)</span></a>
       </nav>
       <div class="mini" aria-hidden="true">
         <a href="#biomedica" class="active">Inicio Biomédica</a>
@@ -168,57 +175,161 @@
     </aside>
 
     <div class="content">
-      <h2 id="t-bio" style="margin:0 0 6px">Ingeniería Biomédica (FCEFyN – UNC)</h2>
+      <h2 style="margin:0 0 6px">Ingeniería Biomédica (FCEFyN – UNC)</h2>
       <p class="muted" style="margin:0 0 16px">
         Oficial:
         <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/" target="_blank" rel="noopener">Carrera</a> ·
-        <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener">Plan 2025</a>
+        <a class="btn" href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener">Abrir Plan 2025</a>
       </p>
 
-      <article class="step" id="bio-p1">
-        <h3>1) Por qué me interesa (factores internos/externos)</h3>
+      <article class="step" id="bio-mot">
+        <h3>Motivación</h3>
         <div class="grid2">
           <div>
             <ul>
-              <li><strong>Internos:</strong> interés por biomecánica; deporte de alto rendimiento; gusto por programación/robótica.</li>
-              <li>Aplicar tecnología con impacto en salud (diagnóstico, rehabilitación, calidad normativa).</li>
+              <li><strong>Internos:</strong> biomecánica ligada al deporte; interés por programación y robótica.</li>
+              <li>Construir soluciones con impacto en salud: diagnóstico, rehabilitación, calidad normativa.</li>
             </ul>
           </div>
           <div>
             <ul>
-              <li><strong>Externos:</strong> se estudia en <a href="https://fcefyn.unc.edu.ar/" target="_blank" rel="noopener">FCEFyN–UNC</a>; <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener">Plan 2025</a> con esterilización, diseño bajo norma, calidad y mantenimiento hospitalario.</li>
+              <li><strong>Externos:</strong> Plan 2025 con esterilización, diseño bajo norma, calidad y gestión del mantenimiento hospitalario.</li>
               <li>Salidas: dispositivos médicos, bioinstrumentación, imágenes, gestión hospitalaria, I+D.</li>
             </ul>
           </div>
         </div>
       </article>
 
-      <article class="step" id="bio-p2">
-        <h3>2) Dónde se estudia en Córdoba + duración/plan</h3>
+      <article class="step" id="bio-donde">
+        <h3>Dónde se estudia + Plan</h3>
         <ul>
           <li><strong>UNC – FCEFyN:</strong> pública, ~5 años. Requiere <a href="https://fcefyn.unc.edu.ar/ingresantes/" target="_blank" rel="noopener">CINEU (nivelación)</a> y <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/extension/prosecretaria-de-vinculacion-social/compromiso-social-estudiantil-en-la-fcefyn/" target="_blank" rel="noopener">≥ 30 h CSE</a>.</li>
-          <li><strong>Plan 2025:</strong> esterilización, diseño bajo norma, calidad, mantenimiento hospitalario, proyecto integrador y práctica profesional.</li>
         </ul>
       </article>
 
-      <article class="step" id="bio-p3">
-        <h3>3) Plan de estudio (mapa por año/semestre)</h3>
-        <div class="plan">
-          <div class="plangrid" id="plan-bio-grid"></div>
-          <div class="footnote">Reemplazar por el <strong>listado oficial</strong> por semestre desde el <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener">Plan 2025</a>.</div>
-        </div>
+      <article class="step" id="bio-plan">
+        <h3>Plan de estudio (oficial)</h3>
+
+        <!-- ACCORDION · COMPLETAR CON LISTADO DEL PLAN 2025 -->
+        <details open>
+          <summary>1.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Análisis Matemático I</li>
+                <li>Álgebra y Geometría</li>
+                <li>Física I</li>
+                <li>Química</li>
+                <li>Introducción a la Ingeniería</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Análisis Matemático II</li>
+                <li>Física II</li>
+                <li>Programación I</li>
+                <li>Biología</li>
+                <li>Taller/Laboratorio</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>2.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Probabilidad y Estadística</li>
+                <li>Sistemas Digitales</li>
+                <li>Señales y Sistemas</li>
+                <li>Anatomía y Fisiología I</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Instrumentación Biomédica I</li>
+                <li>Electrónica I</li>
+                <li>Biomecánica I</li>
+                <li>Anatomía y Fisiología II</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>3.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Procesamiento de Señales Biomédicas</li>
+                <li>Electrónica II</li>
+                <li>Materiales Biomédicos</li>
+                <li>Imágenes en Medicina I</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Imágenes en Medicina II</li>
+                <li>Bioseguridad y Esterilización</li>
+                <li>Gestión/Mantenimiento Hospitalario</li>
+                <li>Diseño bajo Norma</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>4.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Control</li>
+                <li>Telemedicina / IoT Médico</li>
+                <li>Calidad y Regulación</li>
+                <li>Rehabilitación</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Proyecto Integrador I</li>
+                <li>Gestión de Tecnología Hospitalaria</li>
+                <li>Optativa Biomédica I</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>5.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Práctica Profesional</li>
+                <li>Optativa Biomédica II</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Proyecto Final de Carrera</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+    
       </article>
     </div>
   </section>
 
   <!-- CARRERA: COMPUTACIÓN -->
-  <section class="career wrap" id="computacion" aria-labelledby="t-comp">
+  <section class="career wrap" id="computacion">
     <aside class="side" aria-label="Índice Computación">
       <div class="tag" style="border-color:var(--cyan)">Ingeniería en Computación</div>
       <nav class="index" id="idx-comp">
-        <a href="#comp-p1"><span class="dot"></span><span>1) Motivación</span></a>
-        <a href="#comp-p2"><span class="dot"></span><span>2) Dónde + Plan (resumen)</span></a>
-        <a href="#comp-p3"><span class="dot"></span><span>3) Plan de estudio</span></a>
+        <a href="#comp-mot"><span class="dot"></span><span>Motivación</span></a>
+        <a href="#comp-donde"><span class="dot"></span><span>Dónde se estudia + Plan</span></a>
+        <a href="#comp-plan"><span class="dot"></span><span>Plan de estudio (oficial)</span></a>
       </nav>
       <div class="mini" aria-hidden="true">
         <a href="#biomedica">Ir a Biomédica</a>
@@ -227,15 +338,15 @@
     </aside>
 
     <div class="content">
-      <h2 id="t-comp" style="margin:0 0 6px">Ingeniería en Computación (FCEFyN – UNC)</h2>
+      <h2 style="margin:0 0 6px">Ingeniería en Computación (FCEFyN – UNC)</h2>
       <p class="muted" style="margin:0 0 16px">
         Oficial:
         <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/" target="_blank" rel="noopener">Carrera</a> ·
-        <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener">Plan 2025</a>
+        <a class="btn" href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener">Abrir Plan 2025 </a>
       </p>
 
-      <article class="step" id="comp-p1">
-        <h3>1) Por qué me interesa (factores internos/externos)</h3>
+      <article class="step" id="comp-mot">
+        <h3>Motivación</h3>
         <div class="grid2">
           <div>
             <ul>
@@ -245,38 +356,141 @@
           </div>
           <div>
             <ul>
-              <li><strong>Externos:</strong> <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener">Plan 2025</a> con IA y seguridad; base matemática (funcional/lógica) y materias integradoras.</li>
-              <li>Alta demanda laboral (ver <a href="https://cessi.org.ar/opssi/" target="_blank" rel="noopener">OPSSI–CESSI</a>).</li>
+              <li><strong>Externos:</strong> Plan 2025 con IA y seguridad; base matemática (funcional/lógica) y materias integradoras.</li>
+              <li>Alta demanda laboral (indicadores OPSSI–CESSI).</li>
             </ul>
           </div>
         </div>
       </article>
 
-      <article class="step" id="comp-p2">
-        <h3>2) Dónde se estudia en Córdoba + duración/plan</h3>
+      <article class="step" id="comp-donde">
+        <h3>Dónde se estudia + Plan</h3>
         <ul>
           <li><strong>UNC – FCEFyN:</strong> pública, ~5 años. Requiere <a href="https://fcefyn.unc.edu.ar/ingresantes/" target="_blank" rel="noopener">CINEU (nivelación)</a> y <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/extension/prosecretaria-de-vinculacion-social/compromiso-social-estudiantil-en-la-fcefyn/" target="_blank" rel="noopener">≥ 30 h CSE</a>.</li>
-          <li><strong>Afines en Córdoba:</strong>
+          <li><strong>Afines Córdoba:</strong>
             <a href="https://www.institucional.frc.utn.edu.ar/internacionales/frc/de_grado/sistemas.asp" target="_blank" rel="noopener">UTN FRC – Ing. en Sistemas de Información</a>,
             <a href="https://ucc.edu.ar/carreras/ingenieria-computacion/" target="_blank" rel="noopener">UCC – Ing. en Computación</a>,
-            <a href="https://www.ubp.edu.ar/academicas/ingenieria-informatica/" target="_blank" rel="noopener">UBP – Ing. Informática</a>.
+            <a href="https://21.edu.ar/carreras/ingenieria-de-software/" target="_blank" rel="noopener">Siglo 21 – Ing. en Software</a>
           </li>
         </ul>
       </article>
 
-      <article class="step" id="comp-p3">
-        <h3>3) Plan de estudio (mapa por año/semestre)</h3>
-        <div class="plan">
-          <div class="plangrid" id="plan-comp-grid"></div>
-          <div class="footnote">Reemplazar por el <strong>listado oficial</strong> por semestre desde el <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener">Plan 2025</a>.</div>
-        </div>
+      <article class="step" id="comp-plan">
+        <h3>Plan de estudio (oficial)</h3>
+
+        <!-- ACCORDION · COMPLETAR CON LISTADO DEL PLAN 2025 -->
+        <details open>
+          <summary>1.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Análisis Matemático I</li>
+                <li>Álgebra</li>
+                <li>Programación I</li>
+                <li>Introducción a la Computación</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Análisis Matemático II</li>
+                <li>Estructuras de Datos</li>
+                <li>Arquitectura de Computadoras I</li>
+                <li>Lógica</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>2.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Probabilidad y Estadística</li>
+                <li>Paradigmas (Funcional)</li>
+                <li>Sistemas Digitales</li>
+                <li>Arquitectura de Computadoras II</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Programación II</li>
+                <li>Sistemas Operativos</li>
+                <li>Bases de Datos</li>
+                <li>Redes I</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>3.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Ingeniería de Software</li>
+                <li>Redes II</li>
+                <li>Seguridad I</li>
+                <li>Inteligencia Artificial I</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Sistemas Embebidos</li>
+                <li>Visión por Computadora / Señales</li>
+                <li>Modelado y Simulación</li>
+                <li>Optativa I</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>4.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Computación de Alto Desempeño</li>
+                <li>Seguridad II</li>
+                <li>Arquitecturas Distribuidas</li>
+                <li>Optativa II</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>Proyecto Integrador I</li>
+                <li>Electiva Interdisciplinaria</li>
+                <li>Optativa III</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>5.º Año</summary>
+          <div class="year">
+            <div class="sem"><em>1.º Semestre</em>
+              <ul>
+                <li>Práctica Profesional</li>
+                <li>Proyecto Final</li>
+              </ul>
+            </div>
+            <div class="sem"><em>2.º Semestre</em>
+              <ul>
+                <li>—</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+
       </article>
     </div>
   </section>
 
-  <!-- 6) REFLEXIONES PERSONALES (ÚNICO BLOQUE) -->
+  <!-- REFLEXIONES (ÚNICO BLOQUE) -->
   <section class="wrap" id="reflexiones">
-    <h2>6) Reflexiones personales (síntesis)</h2>
+    <h2>Reflexiones personales (síntesis)</h2>
     <div class="grid2">
       <div class="card">
         <p><strong>Perfil e intereses:</strong> programación, robótica, matemática y ciencias naturales. Disfruto construir soluciones que funcionen: prototipos soft–hard, integración y pruebas.</p>
@@ -290,62 +504,41 @@
     <div class="card" style="margin-top:12px">
       <strong>Conclusión general:</strong>
       <p class="muted" style="margin:6px 0 0">
-        Ambas ingenierías conectan con mi perfil técnico–científico y con el impacto que busco. Biomédica profundiza en cuerpo humano, señales e instrumentación para la salud; Computación ofrece herramientas amplias de software, IA y embebidos que puedo aplicar a salud y deporte. Mi decisión final se apoya en combinar estas fortalezas: aprender haciendo, proyectos con impacto real y formación sólida para crecer en equipos interdisciplinarios.
+        Las dos ingenierías encajan con mi perfil técnico–científico y con el impacto que busco. Biomédica profundiza en cuerpo humano, señales e instrumentación para la salud; Computación aporta herramientas amplias de software, IA y embebidos que puedo llevar a salud y deporte. Mi apuesta es combinar ambas miradas: aprender haciendo, proyectos con impacto real y trabajo interdisciplinario.
       </p>
     </div>
   </section>
 
-  <!-- PLANES OFICIALES 2025 -->
-  <section class="wrap" id="planes">
-    <h2>Planes oficiales 2025</h2>
-    <div class="grid2">
-      <a class="sources" style="display:block" href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener">
-        <strong>Plan 2025 · Ingeniería Biomédica</strong><br><small>Escuela de Ingeniería Biomédica – FCEFyN, UNC.</small>
-      </a>
-      <a class="sources" style="display:block" href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener">
-        <strong>Plan 2025 · Ingeniería en Computación</strong><br><small>Escuela de Ingeniería en Computación – FCEFyN, UNC.</small>
-      </a>
-    </div>
-  </section>
-
-  <!-- ESTADÍSTICAS (listas para completar) -->
+  <!-- ESTADÍSTICAS (8 tarjetas) -->
   <section class="stats wrap" id="estadisticas">
-    <h2>Estadísticas clave (Argentina / Córdoba)</h2>
+    <h2>Estadísticas clave</h2>
     <div class="statgrid">
-      <div class="stat"><div class="num" id="st-ingresantes">—</div><small>Ingresantes anuales (SPU)</small></div>
-      <div class="stat"><div class="num" id="st-matricula">—</div><small>Matrícula total (SPU)</small></div>
-      <div class="stat"><div class="num" id="st-egresados">—</div><small>Egresados anuales (SPU)</small></div>
-      <div class="stat"><div class="num" id="st-tasa">—</div><small>Tasa de crecimiento matrícula (SPU)</small></div>
+      <div class="stat"><div class="num">Tasa Bruta de Ingreso: 14,5%</div><small>Sistema universitario argentino, 2023 (SPU).</small></div>
+      <div class="stat"><div class="num">158.179 empleos</div><small>Industria del software (2024, CESSI–OPSSI).</small></div>
+      <div class="stat"><div class="num">+6.131 puestos</div><small>Nuevos empleos creados en 2024 (CESSI–OPSSI).</small></div>
+      <div class="stat"><div class="num">USD 2.674 M</div><small>Exportaciones de SSI 2024 (presentaciones CESSI/ME).</small></div>
+      <div class="stat"><div class="num">Mediana salarial: $1.200.000</div><small>Sector software – ene 2024 (OPSSI).</small></div>
+      <div class="stat"><div class="num">+10,2% anual</div><small>Crecimiento exportaciones SSI 2015–2022 (Sec. Economía del Conocimiento).</small></div>
 
-      <div class="stat"><div class="num" id="st-it-empleo">—</div><small>Empleo sector IT (OPSSI–CESSI)</small></div>
-      <div class="stat"><div class="num" id="st-it-export">—</div><small>Exportaciones servicios basados en conocimiento (OPSSI–CESSI)</small></div>
-      <div class="stat"><div class="num" id="st-it-salarios">—</div><small>Salarios promedio IT (OPSSI–CESSI)</small></div>
-      <div class="stat"><div class="num" id="st-hosp">—</div><small>Parque tecnológico hospitalario (fuente provincial)</small></div>
-
-      <div class="stat"><div class="num" id="st-anmat">—</div><small>Dispositivos médicos registrados (ANMAT)</small></div>
-      <div class="stat"><div class="num" id="st-incubadoras">—</div><small>Incubadoras/centros I+D Córdoba</small></div>
-      <div class="stat"><div class="num" id="st-practicas">—</div><small>Convenios/prácticas vigentes (FCEFyN)</small></div>
-      <div class="stat"><div class="num" id="st-becas">—</div><small>Becas/ayudas disponibles</small></div>
     </div>
-    <p class="footnote">Completá los valores con datos de <a href="https://www.argentina.gob.ar/educacion/universidades/informacion/publicaciones/anuarios" target="_blank" rel="noopener">SPU – Anuarios estadísticos</a>, <a href="https://cessi.org.ar/opssi/" target="_blank" rel="noopener">OPSSI–CESSI</a> y <a href="https://www.argentina.gob.ar/anmat" target="_blank" rel="noopener">ANMAT</a>.</p>
+
   </section>
 
   <!-- FUENTES -->
   <section class="wrap" id="fuentes">
     <h2>Fuentes oficiales</h2>
     <div class="sources">
-      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/" target="_blank" rel="noopener"><strong>FCEFyN · Ingeniería Biomédica</strong><br><small>Página de la carrera.</small></a>
-      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener"><strong>Plan 2025 · Biomédica</strong><br><small>Plan actualizado.</small></a>
-      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/" target="_blank" rel="noopener"><strong>FCEFyN · Ingeniería en Computación</strong><br><small>Página de la carrera.</small></a>
-      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener"><strong>Plan 2025 · Computación</strong><br><small>Plan actualizado.</small></a>
-      <a href="https://fcefyn.unc.edu.ar/ingresantes/" target="_blank" rel="noopener"><strong>Ingreso · CINEU (FCEFyN)</strong><br><small>Información oficial de ingreso.</small></a>
-      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/extension/prosecretaria-de-vinculacion-social/compromiso-social-estudiantil-en-la-fcefyn/" target="_blank" rel="noopener"><strong>Compromiso Social Estudiantil (CSE)</strong><br><small>≥ 30 horas.</small></a>
-      <a href="https://www.argentina.gob.ar/educacion/universidades/informacion/publicaciones/anuarios" target="_blank" rel="noopener"><strong>SPU · Anuarios Estadísticos</strong><br><small>Matrícula/ingresantes/egresados.</small></a>
-      <a href="https://cessi.org.ar/opssi/" target="_blank" rel="noopener"><strong>OPSSI–CESSI</strong><br><small>Indicadores sector IT.</small></a>
-      <a href="https://www.argentina.gob.ar/anmat" target="_blank" rel="noopener"><strong>ANMAT · Productos médicos</strong><br><small>Registros y normativa.</small></a>
+      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/" target="_blank" rel="noopener"><strong>FCEFyN · Ingeniería Biomédica</strong></a>
+      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-biomedica/carrera-ingenieria-biomedica/plan-de-estudios-2025/" target="_blank" rel="noopener"><strong>Plan 2025 · Biomédica</strong></a>
+      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/" target="_blank" rel="noopener"><strong>FCEFyN · Ingeniería en Computación</strong></a>
+      <a href="https://fcefyn.unc.edu.ar/facultad/secretarias/academica/escuelas/ingenieria-computacion/carrera-ingenieria-en-computacion/plan-de-estudios-2025-/" target="_blank" rel="noopener"><strong>Plan 2025 · Computación</strong></a>
+      <!-- Fuente primaria SPU: ahora LOCAL -->
+      <a href="sintesis_anuario_2023-2024.pdf" target="_blank" rel="noopener"><strong>SPU · Síntesis 2023–2024 (PDF local)</strong></a>
+      <a href="https://cessi.org.ar/opssi/" target="_blank" rel="noopener"><strong>OPSSI–CESSI · Reportes sectoriales</strong></a>
+      <a href="https://www.argentina.gob.ar/sites/default/files/software_y_servicios_informaticos_2024.pdf" target="_blank" rel="noopener"><strong>Software y Servicios Informáticos 2024</strong></a>
       <a href="https://www.institucional.frc.utn.edu.ar/internacionales/frc/de_grado/sistemas.asp" target="_blank" rel="noopener"><strong>UTN FRC · Ing. en Sistemas de Información</strong></a>
       <a href="https://ucc.edu.ar/carreras/ingenieria-computacion/" target="_blank" rel="noopener"><strong>UCC · Ing. en Computación</strong></a>
-      <a href="https://www.ubp.edu.ar/academicas/ingenieria-informatica/" target="_blank" rel="noopener"><strong>UBP · Ing. Informática</strong></a>
+      <a href="https://21.edu.ar/carreras/ingenieria-de-software/" target="_blank" rel="noopener"><strong>Siglo 21 · Ing. en Software</strong></a>
     </div>
   </section>
 </main>
@@ -398,43 +591,24 @@ document.querySelector('.title a[href="#inicio"]').addEventListener('click', (e)
   e.preventDefault(); document.getElementById('inicio').scrollIntoView({behavior:'smooth'}); history.replaceState(null,'','#inicio');
 });
 
-/* Muestras de plan (placeholder) — reemplazá por el plan oficial */
-const ejemploPlanBio = [
-  {anio:1, s1:['Análisis Matemático I','Álgebra y Geometría','Física I','Química','Intro. a la Ingeniería'],
-          s2:['Análisis Matemático II','Física II','Programación I','Biología','Taller/Lab']},
-  {anio:2, s1:['Prob. y Estadística','Sistemas Digitales','Señales y Sistemas','Anat. y Fisio. I'],
-          s2:['Instrum. Biomédica I','Electrónica I','Biomecánica I','Anat. y Fisio. II']},
-  {anio:3, s1:['Proc. Señales Biomédicas','Electrónica II','Materiales Biomédicos','Imágenes I'],
-          s2:['Imágenes II','Bioseg. y Esterilización','Mantenimiento Hospitalario','Diseño bajo Norma']},
-  {anio:4, s1:['Control','Telemedicina / IoT Médico','Calidad y Regulación','Rehabilitación'],
-          s2:['Proyecto Integrador I','Gestión Tec. Hospitalaria','Optativa I']},
-  {anio:5, s1:['Práctica Profesional','Optativa II'], s2:['Proyecto Final de Carrera']},
-];
-const ejemploPlanComp = [
-  {anio:1, s1:['Análisis Matemático I','Álgebra','Programación I','Intro. a la Computación'],
-          s2:['Análisis Matemático II','Estructuras de Datos','Arquitectura I','Lógica']},
-  {anio:2, s1:['Prob. y Estadística','Paradigmas (Funcional)','Sistemas Digitales','Arquitectura II'],
-          s2:['Programación II','Sistemas Operativos','Bases de Datos','Redes I']},
-  {anio:3, s1:['Ing. de Software','Redes II','Seguridad I','IA I'],
-          s2:['Sistemas Embebidos','Visión/Señales','Modelado y Simulación','Optativa I']},
-  {anio:4, s1:['HPC','Seguridad II','Arquitecturas Distribuidas','Optativa II'],
-          s2:['Proyecto Integrador I','Electiva Interdisciplinaria','Optativa III']},
-  {anio:5, s1:['Práctica Profesional','Proyecto Final'], s2:['—']},
-];
+  (function(){
+    let lastY = window.pageYOffset || document.documentElement.scrollTop;
+    const header = document.querySelector('.title');
+    const threshold = 16; // evita parpadeo por micro scroll
 
-function renderPlan(containerId, data){
-  const root = document.getElementById(containerId);
-  if(!root) return;
-  root.innerHTML = data.map(y=>`
-    <div class="card">
-      <strong>Año ${y.anio}</strong>
-      <div class="sem"><em>1.º Sem</em><ul>${y.s1.map(m=>`<li>${m}</li>`).join('')}</ul></div>
-      <div class="sem"><em>2.º Sem</em><ul>${y.s2.map(m=>`<li>${m}</li>`).join('')}</ul></div>
-    </div>
-  `).join('');
-}
-renderPlan('plan-bio-grid', ejemploPlanBio);
-renderPlan('plan-comp-grid', ejemploPlanComp);
+    window.addEventListener('scroll', () => {
+      const y = window.pageYOffset || document.documentElement.scrollTop;
+      const goingDown = y - lastY > threshold;
+      const goingUp   = lastY - y > threshold;
+
+      if (goingDown && y > 80) header.classList.add('hide');
+      else if (goingUp)        header.classList.remove('hide');
+
+      lastY = y;
+    }, { passive: true });
+  })();
+
+
 </script>
 </body>
 </html>
